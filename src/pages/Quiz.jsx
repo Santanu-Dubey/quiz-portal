@@ -1,34 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import questions from "../data/questions";
+
 
 function Quiz() {
-  const questions = [
-    {
-      question: "What is the capital of India?",
-      options: ["Mumbai", "Delhi", "Kolkata", "Chennai"],
-      answer: "Delhi",
-    },
-    {
-      question: "Which planet is known as the Red Planet?",
-      options: ["Earth", "Mars", "Jupiter", "Venus"],
-      answer: "Mars",
-    },
-    {
-      question: "Who is known as the Father of Computers?",
-      options: [
-        "Charles Babbage",
-        "Alan Turing",
-        "Bill Gates",
-        "Steve Jobs",
-      ],
-      answer: "Charles Babbage",
-    },
-  ];
+  
 
  const [currentQuestion, setCurrentQuestion] = useState(0);
 const [score, setScore] = useState(0);
 const [selectedAnswer, setSelectedAnswer] = useState("");
 const [quizFinished, setQuizFinished] = useState(false);
+const [timeLeft, setTimeLeft] = useState(60);
+useEffect(() => {
+  if (timeLeft > 0 && !quizFinished) {
+    const timer = setTimeout(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }
+
+  if (timeLeft === 0) {
+    setQuizFinished(true);
+  }
+}, [timeLeft, quizFinished]);
+
+function restartQuiz() {
+  setCurrentQuestion(0);
+  setScore(0);
+  setSelectedAnswer("");
+  setQuizFinished(false);
+  setTimeLeft(60);
+}
   
 function handleNext() {
   if (
@@ -43,9 +46,26 @@ function handleNext() {
   if (currentQuestion < questions.length - 1) {
     setCurrentQuestion(currentQuestion + 1);
   } else {
-    setQuizFinished(true);
+    const finalScore =
+  selectedAnswer === questions[currentQuestion].answer
+    ? score + 1
+    : score;
+
+const savedHighScore =
+  Number(localStorage.getItem("highScore")) || 0;
+
+if (finalScore > savedHighScore) {
+  localStorage.setItem(
+    "highScore",
+    finalScore
+  );
+}
+
+setQuizFinished(true);
   }
 }
+const highScore =
+  localStorage.getItem("highScore") || 0;
 if (quizFinished) {
   return (
     <>
@@ -57,14 +77,24 @@ if (quizFinished) {
         <h2>
   Your Score: {score} / {questions.length}
 </h2>
+<p>
+  {score === questions.length
+    ? "🏆 Excellent!"
+    : score >= questions.length / 2
+    ? "👍 Good Job!"
+    : "📚 Keep Practicing!"}
+</p>
 
 <p>
   Percentage: {Math.round((score / questions.length) * 100)}%
 </p>
+<p>
+  High Score: {highScore}
+</p>
 
         <button
           className="next-btn"
-          onClick={() => window.location.reload()}
+         onClick={restartQuiz}
         >
           Restart Quiz
         </button>
@@ -79,7 +109,22 @@ if (quizFinished) {
 
       <div className="quiz-container">
         <h1>General Knowledge Quiz</h1>
+        <h3>Time Left: {timeLeft}s</h3>
         <p>Score: {score}</p>
+        <p>
+  Question {currentQuestion + 1} of {questions.length}
+</p>
+
+<div className="progress-bar">
+  <div
+    className="progress-fill"
+    style={{
+      width: `${
+        ((currentQuestion + 1) / questions.length) * 100
+      }%`,
+    }}
+  ></div>
+</div>
 
         <div className="question-card">
           <h2>
@@ -94,7 +139,11 @@ if (quizFinished) {
   className={`option-btn ${
     selectedAnswer === option ? "selected" : ""
   }`}
-  onClick={() => setSelectedAnswer(option)}
+  onClick={() => {
+  if (!selectedAnswer) {
+    setSelectedAnswer(option);
+  }
+}}
 >
   {option}
 </button>
@@ -102,11 +151,12 @@ if (quizFinished) {
           )}
 
           <button
-            className="next-btn"
-            onClick={handleNext}
-          >
-            Next Question
-          </button>
+  className="next-btn"
+  onClick={handleNext}
+  disabled={!selectedAnswer}
+>
+  Next Question
+</button>
         </div>
       </div>
     </>

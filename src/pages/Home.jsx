@@ -19,7 +19,7 @@ function Home() {
             10 Questions • 10 Minutes • Beginner Level
           </p>
 
-          <Link to="/quiz">
+          <Link to="/categories">
             <button className="hero-btn">
               Start Quiz
             </button>
