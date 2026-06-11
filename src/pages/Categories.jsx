@@ -14,24 +14,37 @@ function Categories() {
         <div className="category-grid">
           <button
             className="category-btn"
-            onClick={() => navigate("/quiz")}
+           onClick={() =>
+  navigate("/quiz", {
+    state: { category: "gk" },
+  })
+}
           >
-            General Knowledge
+             🧠 General Knowledge
           </button>
 
           <button
             className="category-btn"
-            onClick={() => navigate("/quiz")}
+           onClick={() =>
+  navigate("/quiz", {
+    state: { category: "programming" },
+  })
+}
           >
-            Programming
+             💻 Programming
           </button>
 
           <button
             className="category-btn"
-            onClick={() => navigate("/quiz")}
+            onClick={() =>
+  navigate("/quiz", {
+    state: { category: "science" },
+  })
+}
           >
-            Science
+          🔬 Science
           </button>
+
         </div>
       </div>
     </>

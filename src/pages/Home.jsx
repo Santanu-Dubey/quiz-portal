@@ -1,29 +1,31 @@
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 function Home() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Navbar />
 
       <div className="hero">
-        <h1>Welcome to QuizMaster</h1>
+        <div className="hero-card">
+          <h1>🚀 QuizMaster</h1>
 
-        <p>
-          Create quizzes, challenge friends, and test your knowledge.
-        </p>
-
-        <div className="quiz-card">
-          <h2>General Knowledge Quiz</h2>
+          <h2>Challenge Your Knowledge</h2>
 
           <p>
-            10 Questions • 10 Minutes • Beginner Level
+            Test your skills in Programming, Science,
+            and General Knowledge. Track your score,
+            beat your high score, and keep learning.
           </p>
 
-          <Link to="/categories">
-            <button className="hero-btn">
-              Start Quiz
-            </button>
-          </Link>
+          <button
+            className="hero-btn"
+            onClick={() => navigate("/categories")}
+          >
+            Start Quiz
+          </button>
         </div>
       </div>
     </>

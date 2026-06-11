@@ -1,16 +1,33 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import questions from "../data/questions";
+import { useLocation } from "react-router-dom";
+import gkQuestions from "../data/gkQuestions";
+import programmingQuestions from "../data/programmingQuestions";
+import scienceQuestions from "../data/scienceQuestions";
 
 
 function Quiz() {
-  
 
- const [currentQuestion, setCurrentQuestion] = useState(0);
+    const location = useLocation();
+const category = location.state?.category || "gk";
+
+ let questions;
+
+  if (category === "programming") {
+    questions = programmingQuestions;
+  } else if (category === "science") {
+    questions = scienceQuestions;
+  } else {
+    questions = gkQuestions;
+  }
+
+const [currentQuestion, setCurrentQuestion] = useState(0);
 const [score, setScore] = useState(0);
 const [selectedAnswer, setSelectedAnswer] = useState("");
 const [quizFinished, setQuizFinished] = useState(false);
 const [timeLeft, setTimeLeft] = useState(60);
+
+
 useEffect(() => {
   if (timeLeft > 0 && !quizFinished) {
     const timer = setTimeout(() => {
@@ -108,7 +125,13 @@ if (quizFinished) {
       <Navbar />
 
       <div className="quiz-container">
-        <h1>General Knowledge Quiz</h1>
+       <h1>
+  {category === "programming"
+    ? "Programming Quiz"
+    : category === "science"
+    ? "Science Quiz"
+    : "General Knowledge Quiz"}
+</h1>
         <h3>Time Left: {timeLeft}s</h3>
         <p>Score: {score}</p>
         <p>
