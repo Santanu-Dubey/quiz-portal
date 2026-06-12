@@ -26,6 +26,8 @@ const [score, setScore] = useState(0);
 const [selectedAnswer, setSelectedAnswer] = useState("");
 const [quizFinished, setQuizFinished] = useState(false);
 const [timeLeft, setTimeLeft] = useState(60);
+const [userAnswers, setUserAnswers] = useState([]);
+const [showAnswer, setShowAnswer] = useState(false);
 
 
 useEffect(() => {
@@ -48,6 +50,7 @@ function restartQuiz() {
   setSelectedAnswer("");
   setQuizFinished(false);
   setTimeLeft(60);
+  setUserAnswers([]);
 }
   
 function handleNext() {
@@ -57,6 +60,15 @@ function handleNext() {
   ) {
     setScore(score + 1);
   }
+
+  setUserAnswers([
+  ...userAnswers,
+  {
+    question: questions[currentQuestion].question,
+    selected: selectedAnswer,
+    correct: questions[currentQuestion].answer,
+  },
+]);
 
   setSelectedAnswer("");
 
@@ -108,6 +120,38 @@ if (quizFinished) {
 <p>
   High Score: {highScore}
 </p>
+<h2>Quiz Review</h2>
+
+{userAnswers.map((item, index) => (
+  <div key={index} className="review-card">
+    <h3>
+      {index + 1}. {item.question}
+    </h3>
+
+    <p>
+      Your Answer:
+      {" "}
+      <span
+        style={{
+          color:
+            item.selected === item.correct
+              ? "green"
+              : "red",
+        }}
+      >
+        {item.selected}
+      </span>
+    </p>
+
+    <p>
+      Correct Answer:
+      {" "}
+      <span style={{ color: "green" }}>
+        {item.correct}
+      </span>
+    </p>
+  </div>
+))}
 
         <button
           className="next-btn"
@@ -159,12 +203,28 @@ if (quizFinished) {
             (option, index) => (
             <button
   key={index}
-  className={`option-btn ${
-    selectedAnswer === option ? "selected" : ""
-  }`}
-  onClick={() => {
+  className={`option-btn
+${
+  showAnswer &&
+  option === questions[currentQuestion].answer
+    ? "correct"
+    : ""
+}
+${
+  showAnswer &&
+  option === selectedAnswer &&
+  option !== questions[currentQuestion].answer
+    ? "wrong"
+    : ""
+}`}
+onClick={() => {
   if (!selectedAnswer) {
     setSelectedAnswer(option);
+    setShowAnswer(true);
+setTimeout(() => {
+  setShowAnswer(false);
+  handleNext();
+}, 2000);
   }
 }}
 >
@@ -173,13 +233,15 @@ if (quizFinished) {
             )
           )}
 
-          <button
-  className="next-btn"
-  onClick={handleNext}
-  disabled={!selectedAnswer}
->
-  Next Question
-</button>
+    {!showAnswer && (
+  <button
+    className="next-btn"
+    onClick={handleNext}
+    disabled={!selectedAnswer}
+  >
+    Next Question
+  </button>
+)}
         </div>
       </div>
     </>

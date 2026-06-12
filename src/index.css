@@ -503,3 +503,25 @@ nav {
     font-size: 1.8rem;
   }
 }
+.review-card {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.review-card h3 {
+  margin-bottom: 10px;
+}
+.correct {
+  background: #22c55e !important;
+  color: white;
+  border-color: #22c55e;
+}
+
+.wrong {
+  background: #ef4444 !important;
+  color: white;
+  border-color: #ef4444;
+}
