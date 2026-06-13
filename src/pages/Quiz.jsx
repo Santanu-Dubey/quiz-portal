@@ -90,6 +90,23 @@ if (finalScore > savedHighScore) {
   );
 }
 
+const history =
+  JSON.parse(localStorage.getItem("quizHistory")) || [];
+
+history.push({
+  score: finalScore,
+  total: questions.length,
+  percentage: Math.round(
+    (finalScore / questions.length) * 100
+  ),
+  date: new Date().toLocaleString(),
+});
+
+localStorage.setItem(
+  "quizHistory",
+  JSON.stringify(history)
+);
+
 setQuizFinished(true);
   }
 }

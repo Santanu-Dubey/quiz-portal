@@ -20,6 +20,52 @@ function Home() {
             beat your high score, and keep learning.
           </p>
 
+<div className="stats-grid">
+  <div className="stat-card">
+    <h3>
+      {localStorage.getItem("highScore") || 0}
+    </h3>
+    <p>High Score</p>
+  </div>
+
+  <div className="stat-card">
+    <h3>
+      {
+        (
+          JSON.parse(
+            localStorage.getItem("quizHistory")
+          ) || []
+        ).length
+      }
+    </h3>
+    <p>Quizzes Taken</p>
+  </div>
+
+  <div className="stat-card">
+    <h3>
+      {(() => {
+        const history =
+          JSON.parse(
+            localStorage.getItem("quizHistory")
+          ) || [];
+
+        if (history.length === 0) return 0;
+
+        const avg =
+          history.reduce(
+            (sum, item) =>
+              sum + item.percentage,
+            0
+          ) / history.length;
+
+        return Math.round(avg);
+      })()}
+      %
+    </h3>
+    <p>Average Score</p>
+  </div>
+</div>
+
           <button
             className="hero-btn"
             onClick={() => navigate("/categories")}
