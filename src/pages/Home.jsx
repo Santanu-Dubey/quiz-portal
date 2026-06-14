@@ -19,6 +19,32 @@ function Home() {
             and General Knowledge. Track your score,
             beat your high score, and keep learning.
           </p>
+          <div className="stats-grid">
+  
+  <div className="stat-card">
+    <h3>
+      {(() => {
+        const history =
+          JSON.parse(
+            localStorage.getItem("quizHistory")
+          ) || [];
+
+        if (history.length === 0) return 0;
+
+        const avg =
+          history.reduce(
+            (sum, item) =>
+              sum + item.percentage,
+            0
+          ) / history.length;
+
+        return Math.round(avg);
+      })()}
+      %
+    </h3>
+    <p>Average Score</p>
+  </div>
+</div>
 
 <div className="stats-grid">
   <div className="stat-card">

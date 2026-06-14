@@ -6,6 +6,7 @@ import programmingQuestions from "../data/programmingQuestions";
 import scienceQuestions from "../data/scienceQuestions";
 
 
+
 function Quiz() {
 
     const location = useLocation();

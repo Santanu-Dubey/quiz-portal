@@ -1,6 +1,52 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 function Register() {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] =
+    useState("");
+
+  const handleRegister = () => {
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const users =
+      JSON.parse(localStorage.getItem("users")) || [];
+
+    const existingUser = users.find(
+      (user) => user.email === email
+    );
+
+    if (existingUser) {
+      alert("User already exists");
+      return;
+    }
+
+    const newUser = {
+      name,
+      email,
+      password,
+    };
+
+    users.push(newUser);
+
+    localStorage.setItem(
+      "users",
+      JSON.stringify(users)
+    );
+
+    alert("Registration Successful!");
+
+    navigate("/login");
+  };
+
   return (
     <>
       <Navbar />
@@ -12,24 +58,42 @@ function Register() {
           <input
             type="text"
             placeholder="Full Name"
+            value={name}
+            onChange={(e) =>
+              setName(e.target.value)
+            }
           />
 
           <input
             type="email"
             placeholder="Email Address"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
           />
 
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
           />
 
           <input
             type="password"
             placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) =>
+              setConfirmPassword(e.target.value)
+            }
           />
 
-          <button>Register</button>
+          <button onClick={handleRegister}>
+            Register
+          </button>
         </div>
       </div>
     </>
