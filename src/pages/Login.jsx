@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 function Login() {
   const navigate = useNavigate();
@@ -8,9 +9,7 @@ function Login() {
   const [password, setPassword] =
     useState("");
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-
+  const handleLogin = () => {
     const users =
       JSON.parse(localStorage.getItem("users")) || [];
 
@@ -21,7 +20,7 @@ function Login() {
     );
 
     if (!user) {
-      alert("Invalid credentials");
+      alert("Invalid Email or Password");
       return;
     }
 
@@ -30,41 +29,43 @@ function Login() {
       JSON.stringify(user)
     );
 
-    alert("Login Successful!");
+    alert("Login Successful");
 
     navigate("/");
   };
 
   return (
-    <div className="form-container">
-      <h1>Login</h1>
+    <>
+      <Navbar />
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-          required
-        />
+      <div className="auth-container">
+        <div className="auth-card">
+          <h1>Login</h1>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-          required
-        />
+          <input
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+          />
 
-        <button type="submit">
-          Login
-        </button>
-      </form>
-    </div>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+          />
+
+          <button onClick={handleLogin}>
+            Login
+          </button>
+        </div>
+      </div>
+    </>
   );
 }
 

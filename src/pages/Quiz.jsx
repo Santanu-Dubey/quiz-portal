@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { useLocation } from "react-router-dom";
 import gkQuestions from "../data/gkQuestions";
 import programmingQuestions from "../data/programmingQuestions";
 import scienceQuestions from "../data/scienceQuestions";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 
@@ -29,7 +29,6 @@ const [quizFinished, setQuizFinished] = useState(false);
 const [timeLeft, setTimeLeft] = useState(60);
 const [userAnswers, setUserAnswers] = useState([]);
 const [showAnswer, setShowAnswer] = useState(false);
-
 
 useEffect(() => {
   if (timeLeft > 0 && !quizFinished) {
