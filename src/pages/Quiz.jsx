@@ -29,6 +29,7 @@ const [quizFinished, setQuizFinished] = useState(false);
 const [timeLeft, setTimeLeft] = useState(60);
 const [userAnswers, setUserAnswers] = useState([]);
 const [showAnswer, setShowAnswer] = useState(false);
+const [userAnswers, setUserAnswers] = useState([]);
 
 useEffect(() => {
   if (timeLeft > 0 && !quizFinished) {
@@ -67,6 +68,19 @@ function handleNext() {
     question: questions[currentQuestion].question,
     selected: selectedAnswer,
     correct: questions[currentQuestion].answer,
+  },
+]);
+
+setUserAnswers([
+  ...userAnswers,
+  {
+    question:
+      questions[currentQuestion].question,
+
+    userAnswer: selectedAnswer,
+
+    correctAnswer:
+      questions[currentQuestion].answer,
   },
 ]);
 
@@ -166,6 +180,29 @@ if (quizFinished) {
       <span style={{ color: "green" }}>
         {item.correct}
       </span>
+    </p>
+  </div>
+))}
+<h2>Answer Review</h2>
+
+{userAnswers.map((item, index) => (
+  <div
+    key={index}
+    className="review-card"
+  >
+    <p>
+      <strong>Question:</strong>{" "}
+      {item.question}
+    </p>
+
+    <p>
+      ❌ Your Answer:
+      {item.userAnswer}
+    </p>
+
+    <p>
+      ✅ Correct Answer:
+      {item.correctAnswer}
     </p>
   </div>
 ))}

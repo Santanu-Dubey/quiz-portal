@@ -19,7 +19,14 @@ function Navbar() {
     <Link to="/register">Register</Link>
   </>
 )}
-
+{currentUser && (
+  <Link to="/profile">
+    Profile
+  </Link>
+)}
+<Link to="/leaderboard">
+  Leaderboard
+</Link>
 <Link to="/history">History</Link>
       </div>
 

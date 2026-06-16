@@ -6,6 +6,8 @@ import Register from "../pages/Register";
 import Quiz from "../pages/Quiz";
 import Categories from "../pages/Categories";
 import History from "../pages/History";
+import Profile from "../pages/Profile";
+import Leaderboard from "../pages/Leaderboard";
 
 function AppRoutes() {
   return (
@@ -16,6 +18,8 @@ function AppRoutes() {
       <Route path="/quiz" element={<Quiz />} />
       <Route path="/categories" element={<Categories />} />
       <Route path="/history" element={<History />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/leaderboard" element={<Leaderboard />} />
     </Routes>
   );
 }
