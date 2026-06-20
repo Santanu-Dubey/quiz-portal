@@ -8,6 +8,7 @@ import Categories from "../pages/Categories";
 import History from "../pages/History";
 import Profile from "../pages/Profile";
 import Leaderboard from "../pages/Leaderboard";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 function AppRoutes() {
   return (
@@ -15,11 +16,49 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/quiz" element={<Quiz />} />
-      <Route path="/categories" element={<Categories />} />
-      <Route path="/history" element={<History />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/leaderboard" element={<Leaderboard />} />
+      <Route
+  path="/categories"
+  element={
+    <ProtectedRoute>
+      <Categories />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/quiz"
+  element={
+    <ProtectedRoute>
+      <Quiz />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/history"
+  element={
+    <ProtectedRoute>
+      <History />
+    </ProtectedRoute>
+  }
+/>
+    <Route
+  path="/profile"
+  element={
+    <ProtectedRoute>
+      <Profile />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/leaderboard"
+  element={
+    <ProtectedRoute>
+      <Leaderboard />
+    </ProtectedRoute>
+  }
+/>
     </Routes>
   );
 }

@@ -29,7 +29,7 @@ const [quizFinished, setQuizFinished] = useState(false);
 const [timeLeft, setTimeLeft] = useState(60);
 const [userAnswers, setUserAnswers] = useState([]);
 const [showAnswer, setShowAnswer] = useState(false);
-const [userAnswers, setUserAnswers] = useState([]);
+
 
 useEffect(() => {
   if (timeLeft > 0 && !quizFinished) {

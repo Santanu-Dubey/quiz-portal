@@ -9,30 +9,51 @@ function Login() {
   const [password, setPassword] =
     useState("");
 
-  const handleLogin = () => {
-    const users =
-      JSON.parse(localStorage.getItem("users")) || [];
-
-    const user = users.find(
-      (u) =>
-        u.email === email &&
-        u.password === password
+ const handleLogin = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
     );
 
-    if (!user) {
-      alert("Invalid Email or Password");
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message);
       return;
     }
 
     localStorage.setItem(
+      "token",
+      data.token
+    );
+
+    localStorage.setItem(
       "currentUser",
-      JSON.stringify(user)
+      JSON.stringify(data.user)
     );
 
     alert("Login Successful");
 
-    navigate("/");
-  };
+    navigate("/categories");
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      "Unable to connect to server"
+    );
+  }
+};
 
   return (
     <>
