@@ -54,7 +54,7 @@ function restartQuiz() {
   setUserAnswers([]);
 }
   
-function handleNext() {
+async function handleNext() {
   if (
     selectedAnswer ===
     questions[currentQuestion].answer
@@ -62,14 +62,6 @@ function handleNext() {
     setScore(score + 1);
   }
 
-  setUserAnswers([
-  ...userAnswers,
-  {
-    question: questions[currentQuestion].question,
-    selected: selectedAnswer,
-    correct: questions[currentQuestion].answer,
-  },
-]);
 
 setUserAnswers([
   ...userAnswers,
@@ -120,6 +112,32 @@ localStorage.setItem(
   "quizHistory",
   JSON.stringify(history)
 );
+
+const currentUser = JSON.parse(
+  localStorage.getItem("currentUser")
+);
+
+try {
+  await fetch(
+    "http://localhost:5000/api/results/save",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+      body: JSON.stringify({
+        userId: currentUser.id,
+        category,
+        score: finalScore,
+        totalQuestions:
+          questions.length,
+      }),
+    }
+  );
+} catch (error) {
+  console.log(error);
+}
 
 setQuizFinished(true);
   }

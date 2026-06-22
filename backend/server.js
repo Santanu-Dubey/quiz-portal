@@ -12,6 +12,9 @@ const authRoutes = require("./routes/authRoutes");
 const connectDB = require("./config/db");
 const resultRoutes =
   require("./routes/resultRoutes");
+  const leaderboardRoutes =
+  require("./routes/leaderboardRoutes");
+
 
 dotenv.config();
 
@@ -23,6 +26,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/results", resultRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 app.get("/", (req, res) => {
   res.send("QuizMaster API Running 🚀");
 });
