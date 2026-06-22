@@ -11,41 +11,47 @@ function Register() {
   const [confirmPassword, setConfirmPassword] =
     useState("");
 
-  const handleRegister = () => {
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+const handleRegister = async () => {
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
 
-    const users =
-      JSON.parse(localStorage.getItem("users")) || [];
-
-    const existingUser = users.find(
-      (user) => user.email === email
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      }
     );
 
-    if (existingUser) {
-      alert("User already exists");
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message);
       return;
     }
-
-    const newUser = {
-      name,
-      email,
-      password,
-    };
-
-    users.push(newUser);
-
-    localStorage.setItem(
-      "users",
-      JSON.stringify(users)
-    );
 
     alert("Registration Successful!");
 
     navigate("/login");
-  };
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      "Unable to connect to server"
+    );
+  }
+};
 
   return (
     <>

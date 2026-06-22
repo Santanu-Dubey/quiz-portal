@@ -10,6 +10,8 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 const connectDB = require("./config/db");
+const resultRoutes =
+  require("./routes/resultRoutes");
 
 dotenv.config();
 
@@ -20,7 +22,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
-
+app.use("/api/results", resultRoutes);
 app.get("/", (req, res) => {
   res.send("QuizMaster API Running 🚀");
 });
