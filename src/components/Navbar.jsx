@@ -11,43 +11,60 @@ function Navbar() {
       <h2>QuizMaster</h2>
 
       <div className="nav-links">
-        <Link to="/">Home</Link>
+  <Link to="/">Home</Link>
 
-{!currentUser && (
-  <>
-    <Link to="/login">Login</Link>
-    <Link to="/register">Register</Link>
-  </>
-)}
-{currentUser && (
-  <Link to="/profile">
-    Profile
-  </Link>
-)}
-<Link to="/leaderboard">
-  Leaderboard
-</Link>
-<Link to="/history">History</Link>
-      </div>
+  {currentUser && (
+    <>
+      <Link to="/categories">
+        Categories
+      </Link>
+
+      <Link to="/history">
+        History
+      </Link>
+
+      <Link to="/leaderboard">
+        Leaderboard
+      </Link>
+
+      <Link to="/profile">
+        Profile
+      </Link>
+    </>
+  )}
+
+  {!currentUser && (
+    <>
+      <Link to="/login">
+        Login
+      </Link>
+
+      <Link to="/register">
+        Register
+      </Link>
+    </>
+  )}
+</div>
 
       <div className="nav-right">
         {currentUser && (
-          <span>
-            Welcome, {currentUser.name}
-          </span>
+       <span className="welcome-user">
+  👋 Welcome, {currentUser.name}
+</span>
         )}
 
         {currentUser && (
-          <button
-            onClick={() => {
-              localStorage.removeItem(
-                "currentUser"
-              );
-              window.location.reload();
-            }}
-          >
-            Logout
-          </button>
+         <button
+  className="logout-btn"
+  onClick={() => {
+    localStorage.removeItem(
+      "currentUser"
+    );
+    window.location.href = "/";
+  }}
+>
+  Logout
+</button>
         )}
 
         <DarkModeToggle />

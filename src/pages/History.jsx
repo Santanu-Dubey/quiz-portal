@@ -1,44 +1,62 @@
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
 function History() {
-  const history =
-    JSON.parse(localStorage.getItem("quizHistory")) || [];
+  const [history, setHistory] =
+    useState([]);
+
+  useEffect(() => {
+    const currentUser = JSON.parse(
+      localStorage.getItem("currentUser")
+    );
+
+    if (!currentUser) return;
+
+    fetch(
+      `http://localhost:5000/api/results/user/${currentUser.id}`
+    )
+      .then((res) => res.json())
+      .then((data) => setHistory(data))
+      .catch((err) =>
+        console.log(err)
+      );
+  }, []);
 
   return (
     <>
       <Navbar />
 
       <div className="quiz-container">
-        <h1>🏆 Quiz History</h1>
+        <h1>📜 Quiz History</h1>
 
         {history.length === 0 ? (
           <p>No quiz attempts yet.</p>
         ) : (
-          history.map((item, index) => (
+          history.map((item) => (
             <div
-              key={index}
+              key={item._id}
               className="review-card"
             >
               <p>
-                Score: {item.score}/{item.total}
+                Category:
+                {" "}
+                {item.category}
               </p>
 
               <p>
-                Percentage: {item.percentage}%
+                Score:
+                {" "}
+                {item.score}/
+                {item.totalQuestions}
               </p>
 
               <p>
-                Date: {item.date}
+                Date:
+                {" "}
+                {new Date(
+                  item.createdAt
+                ).toLocaleString()}
               </p>
-              <button
-  className="next-btn"
-  onClick={() => {
-    localStorage.removeItem("quizHistory");
-    window.location.reload();
-  }}
->
-  Clear History
-</button>
             </div>
           ))
         )}

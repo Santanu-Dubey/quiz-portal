@@ -1,14 +1,22 @@
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
 function Leaderboard() {
-  const history =
-    JSON.parse(
-      localStorage.getItem("quizHistory")
-    ) || [];
+  const [leaderboard, setLeaderboard] =
+    useState([]);
 
-  const sortedHistory = [...history].sort(
-    (a, b) => b.score - a.score
-  );
+  useEffect(() => {
+    fetch(
+      "http://localhost:5000/api/leaderboard"
+    )
+      .then((res) => res.json())
+      .then((data) =>
+        setLeaderboard(data)
+      )
+      .catch((err) =>
+        console.log(err)
+      );
+  }, []);
 
   return (
     <>
@@ -17,28 +25,40 @@ function Leaderboard() {
       <div className="quiz-container">
         <h1>🏆 Leaderboard</h1>
 
-        {sortedHistory.length === 0 ? (
+        {leaderboard.length === 0 ? (
           <p>No quiz attempts yet.</p>
         ) : (
-          sortedHistory.map((item, index) => (
-            <div
-              key={index}
-              className="leaderboard-card"
-            >
-              <h3>
-                #{index + 1}
-              </h3>
+          leaderboard.map(
+            (item, index) => (
+              <div
+                key={item._id}
+                className="leaderboard-card"
+              >
+                <h3>
+                  #{index + 1}
+                </h3>
 
-              <p>
-                Score: {item.score}
-              </p>
+                <p>
+                  Name:
+                  {" "}
+                  {item.userId?.name}
+                </p>
 
-              <p>
-                Percentage:
-                {item.percentage}%
-              </p>
-            </div>
-          ))
+                <p>
+                  Category:
+                  {" "}
+                  {item.category}
+                </p>
+
+                <p>
+                  Score:
+                  {" "}
+                  {item.score}/
+                  {item.totalQuestions}
+                </p>
+              </div>
+            )
+          )
         )}
       </div>
     </>
